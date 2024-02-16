@@ -56,4 +56,16 @@ describe("Event Service",()=> {
         const shortestEvent = eventService.getShortestEvent()
         expect(shortestEvent.endTime - shortestEvent.startTime).toStrictEqual(expectedTime);
     })
+
+    test('getEventByTitle shall return an event with the specified title', async() => {
+        let eventService = new EventService(new EventRepository());
+        const event = eventService.getEventByTitle("Hello World");
+        expect(event.title).toBe("Hello World");
+    })
+
+    test('getCurrentEvents shall return events for the current date', async() => {
+        let eventService = new EventService(new EventRepository());
+        const events = eventService.getCurrentEvents();
+        expect(events).toStrictEqual([]);
+    })
 });

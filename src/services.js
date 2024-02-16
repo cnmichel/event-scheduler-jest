@@ -1,7 +1,3 @@
-
-import EventRepository from "./repository";
-import Event from "./models";
-
 export default class EventService {
 
     /**
@@ -106,15 +102,8 @@ export default class EventService {
      * @return {null | Event}
      */
     getEventByTitle(title) {
-        return null
-    }
-
-    // A implementer en TDD
-    /**
-     *
-     * @param {Date} time
-     */
-    isLocationAvailable(time) {
+        const events = this._eventRepository.getAll();
+        return events.find((event) => event.title === title);
     }
 
     /**
