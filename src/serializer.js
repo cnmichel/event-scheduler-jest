@@ -16,6 +16,15 @@ export default class EventSerializer {
      * @param {string} event
      */
     unserialize(event){
-        return []; //TODO
+        const parsedEvent = JSON.parse(event);
+        const unserializedEvent = new Event();
+
+        unserializedEvent.setStartTime(new Date(parsedEvent.startTime));
+        unserializedEvent.setEndTime(parsedEvent.endTime);
+        unserializedEvent.setTitle(parsedEvent.title);
+        unserializedEvent.setLocation(parsedEvent.location);
+        unserializedEvent.setDescription(parsedEvent.description);
+
+        return unserializedEvent;
     }
 }
