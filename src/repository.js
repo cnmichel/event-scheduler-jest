@@ -1,5 +1,3 @@
-import Event from "./models"
-
 /**
  * The event repository is responsible of events storage from database
  */
@@ -16,7 +14,7 @@ export default class EventRepository {
      * @return Event[]
      */
     getAll(){
-        return []; //TODO
+        return this._dbDriver.getAll();
     }
 
     /**
@@ -25,7 +23,12 @@ export default class EventRepository {
      * @return boolean
      */
     add(event){
-        return false; //TODO
+        if (event !== null) {
+            this._dbDriver.add(event);
+            return true
+        } else {
+            return false;
+        }
     }
 }
 
