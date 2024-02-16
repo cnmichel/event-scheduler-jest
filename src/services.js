@@ -31,7 +31,13 @@ export default class EventService {
      * @return {null | Event}
      */
     getFirstEvent() {
-        return null; //TODO
+        const events = this._eventRepository.getAll();
+        // Sort events from the newest to the oldest
+        const sortedEvents = events.sort((e1, e2) => {
+            return (e1.startTime > e2.startTime) ? 1 : (e1.startTime < e2.startTime) ? -1 : 0;
+        });
+
+        return sortedEvents.shift();
     }
 
     /**
@@ -39,7 +45,13 @@ export default class EventService {
      * @return {null | Event}
      */
     getLastEvent() {
-        return null; //TODO
+        const events = this._eventRepository.getAll();
+        // Sort events from the oldest to the newest
+        const sortedEvents = events.sort((e1, e2) => {
+            return (e1.startTime > e2.startTime) ? -1 : (e1.startTime < e2.startTime) ? 1 : 0;
+        });
+
+        return sortedEvents.shift();
     }
 
     /**
@@ -47,7 +59,15 @@ export default class EventService {
      * @return {null | Event}
      */
     getLongestEvent() {
-        return null; //TODO
+        const events = this._eventRepository.getAll();
+        // Sort events from the longest to the shortest
+        const sortedEvents = events.sort((e1, e2) => {
+            return ((e1.endTime - e1.startTime) > (e2.endTime - e2.startTime)) ? -1
+              : ((e1.endTime - e1.startTime) < (e2.endTime - e2.startTime)) ? 1 : 0
+        });
+        // Filtering out all events with invalid timeframe
+        const filteredEvents = this.getValidEvents(sortedEvents);
+        return filteredEvents.shift();
     }
 
     /**
@@ -55,7 +75,15 @@ export default class EventService {
      * @return {null | Event}
      */
     getShortestEvent() {
-        return null; //TODO
+        const events = this._eventRepository.getAll();
+        // Sort events from the longest to the shortest
+        const sortedEvents = events.sort((e1, e2) => {
+            return ((e1.endTime - e1.startTime) > (e2.endTime - e2.startTime)) ? 1
+              : ((e1.endTime - e1.startTime) < (e2.endTime - e2.startTime)) ? -1 : 0
+        });
+        // Filtering out all events with invalid timeframe
+        const filteredEvents = this.getValidEvents(sortedEvents);
+        return filteredEvents.shift();
     }
 
     // A implementer en TDD
@@ -96,6 +124,14 @@ export default class EventService {
     getCurrentEvents() {
         let now = Date.now();
         return this.hasEventOn(new Date(now));
+    }
+
+    /**
+     * Get current events
+     * @return {Event[]}
+     */
+    getValidEvents(events) {
+        return events.filter((event) => event.endTime - event.startTime >= 0);
     }
     
 }
